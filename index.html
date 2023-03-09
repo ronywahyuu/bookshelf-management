@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookBeuk | Bookshelf Management App</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="icon" href="src/img/logo.png" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <img src="src/img/logo.png" alt="" />
+      <h1>Bookshelf Management</h1>
+    </header>
+    <main>
+      <div class="left">
+        <section class="add_book">
+          <form id="inputBook" action="">
+            <h2>Tambah Buku</h2>
+            <label for="inputBookTitle">Judul</label>
+            <input
+              type="text"
+              name="title"
+              id="inputBookTitle"
+              placeholder="Masukan judul buku"
+              required
+            />
+            <label for="inputBookAuthor">Penulis</label>
+            <input
+              type="text"
+              name="author"
+              id="inputBookAuthor"
+              placeholder="Masukan penulis buku"
+              required
+            />
+            <label for="inputBookYear">Tahun</label>
+            <input
+              type="number"
+              name="year"
+              id="inputBookYear"
+              placeholder="Masukan tahun terbit buku"
+              required
+            />
+            <label for="inputBookThumbnail">Thumbnail</label>
+            <input
+              type="text"
+              name="thumbnail"
+              id="inputBookThumbnail"
+              placeholder="Masukan link thumbnail buku"
+            />
+
+            <div class="" style="display: flex; gap: 10px">
+              <label for="isComplete">Selesai Baca</label>
+              <input type="checkbox" name="isComplete" id="isComplete" />
+            </div>
+
+            <div class="action">
+              <button class="btn-primary" type="submit">Masukan Buku</button>
+              <button class="btn-orange" type="reset">Reset</button>
+            </div>
+          </form>
+        </section>
+      </div>
+      <div class="right">
+        <div class="action-add">
+          <button class="btn-primary btn-add">Tambah Buku</button>
+        </div>
+        <section class="search_book">
+          <label for="inputSearchBook">Cari Buku</label>
+          <div class="input_group">
+            <img src="src/img/icon-search.svg" alt="" />
+            <input
+              type="text"
+              name="search"
+              id="inputSearchBook"
+              placeholder="Masukan judul, penulis, tahun, etc "
+            />
+            <button>Cari</button>
+          </div>
+        </section>
+        <section class="container_book">
+          <div class="bookshelf">
+            <h2>Belum Selesai Dibaca</h2>
+            <div id="incompleteBookshelfList" class="book_list">
+              <!-- <div class="book_item">
+                <img
+                  src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1647263154l/33154385.jpg"
+                  alt=""
+                />
+                <div class="book_item_detail">
+                  <h3>
+                    Belajar Dasar Pemrograman Web frontend javascript html css
+                  </h3>
+                  <p>John Doe</p>
+                  <p>2020</p>
+                  <div class="book_action">
+                    <button class="btn-green">
+                      <img src="src/img/icon-finish.svg" alt="" />
+                      <span>Selesai dibaca</span>
+                    </button>
+                    <button class="btn-danger">
+                      <img src="src/img/icon-delete.svg" alt="" />
+                      <span>Hapus</span>
+                    </button>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+          </div>
+          <div class="bookshelf">
+            <h2>Sudah Selesai Dibaca</h2>
+            <div id="completeBookshelfList" class="book_list">
+              <!-- <div class="book_item">
+                <img
+                  src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1647263154l/33154385.jpg"
+                  alt=""
+                />
+                <div class="book_item_detail">
+                  <h3>Atomic Habits</h3>
+                  <p>John Doe</p>
+                  <p>2020</p>
+
+                  <div class="book_action">
+                    <button class="btn-back">
+                      <img src="src/img/icon-back.svg" alt="" />
+                      <span>Belum selesai</span>
+                    </button>
+                    <button class="btn-danger">
+                      <img src="src/img/icon-delete.svg" alt="" />
+                      <span>Hapus</span>
+                    </button>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <!-- <footer>
+      <p>BookBeuk &copy; 2021</p>
+    </footer> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="src/javascript/storage.js"></script>
+    <script src="src/javascript/script.js"></script>
+    <script src="src/javascript/event-handler.js"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+<div class="book_action">
+            <button class="btn-green">
+                <img src="src/img/icon-finish.svg" alt="" />
+                <span>Selesai dibaca</span>
+            </button>
+            <button class="btn-danger">
+                <img src="src/img/icon-delete.svg" alt="" />
+                <span>Hapus</span>
+            </button>
+        </div>
