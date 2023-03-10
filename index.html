@@ -4,8 +4,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BookBeuk | Bookshelf Management App</title>
-    <link rel="stylesheet" href="style.css" />
+
+    <meta
+      name="description"
+      content="Bookshelf Management App for Dicoding Submission"
+    />
+    <meta name="keywords" content="bookshelf, management, app" />
+    <meta name="author" content="Rony" />
+
+    <title>Dicoding | Bookshelf Management App</title>
+    <link rel="stylesheet" href="src/css/style.css" />
 
     <link rel="icon" href="src/img/logo.png" />
 
@@ -48,7 +56,9 @@
               placeholder="Masukan tahun terbit buku"
               required
             />
-            <label for="inputBookThumbnail">Thumbnail</label>
+            <label for="inputBookThumbnail"
+              >Thumbnail <span style="font-size: 10px">(Opsional)</span>
+            </label>
             <input
               type="text"
               name="thumbnail"
@@ -69,9 +79,9 @@
         </section>
       </div>
       <div class="right">
-        <div class="action-add">
+        <!-- <div class="action-add">
           <button class="btn-primary btn-add">Tambah Buku</button>
-        </div>
+        </div> -->
         <section class="search_book">
           <label for="inputSearchBook">Cari Buku</label>
           <div class="input_group">
@@ -145,7 +155,7 @@
       </div>
     </main>
     <!-- <footer>
-      <p>BookBeuk &copy; 2021</p>
+      <p>BookBeuk by Rony &copy; 2021</p>
     </footer> -->
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

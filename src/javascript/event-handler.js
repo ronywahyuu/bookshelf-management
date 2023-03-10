@@ -1,46 +1,53 @@
+// ================================ This file is for general event handler ================================
+//
+// ** Event listener 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // renderBooks()
-
-
+  // * Initialize
   loadDataFromStorage()
-
-  // if bookshelf child data change, render
-
   renderBooksToBookshelf()
-
-  // if (incompleteBookshelf.childElementCount === 0) {
-  //   incompleteBookshelf.innerHTML = `
-  //     <p class="empty-bookshelf">Tidak ada buku di rak ini</p>
-  //   `
-  // } else {
-  //   incompleteBookshelf.innerHTML = ""
-  //   renderBooksToBookshelf()
-  // }
-
-  btnAdd.addEventListener("click", (e) => {
-    console.log(e.target)
-
-    if (leftColumn.style.display === "none") {
-      leftColumn.style.display = "block"
-    } else {
-      leftColumn.style.display = "none"
-    }
-  })
-
 
   inputBookSubmit.addEventListener("submit", (e) => {
     e.preventDefault()
-
     addBook()
-    console.log("submit")
   })
 
   inputSearchBook.addEventListener("keyup", (e) => {
     searchBook(e.target.value)
   })
 
-})
-document.addEventListener('saved', () => {
-  console.log("saved")
+  // ** Event listener for custom event
+  document.addEventListener('added', () => {
+    Swal.fire({
+      position: 'top',
+      icon: 'success',
+      title: 'Buku berhasil ditambahkan',
+      showConfirmButton: false,
+      timer: 1500
+    })
+  })
+
+  document.addEventListener('removed', () => {
+    Swal.fire(
+      'Berhasil dihapus!',
+      'Buku anda berhasil dihapus.',
+      'success'
+    )
+  })
+
+  document.addEventListener('invalid_year', () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Tahun tidak valid. Harus diantara 1000 - 2040',
+    })
+  })
+
+  document.addEventListener('invalid_thumbnail', () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Invalid Thumbnail',
+      text: 'Anda dapat menggunakan link gambar dari internet.',
+    })
+  })
 })

@@ -158,6 +158,9 @@ main {
 main > div.left {
   flex: 1;
   width: 30%;
+
+  /* transition */
+  transition: 0.1s ease-in-out;
 }
 
 section.add_book {
@@ -380,7 +383,7 @@ section.container_book > .bookshelf:nth-child(2) > h2::after {
     flex-direction: column;
   }
   main > div.left {
-    display: none;
+    /* display: none; */
     width: 100%;
   }
 

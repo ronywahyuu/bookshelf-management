@@ -1,9 +1,8 @@
 "use strict"
 
-const isStorageExist = typeof (Storage) !== undefined
-
 // =================== Initial Data ===================
-// Data
+//
+// ** initial data and object
 let books = []
 let bookId = null
 const bookObject = function (title, author, year, thumbnail, isComplete) {
@@ -17,9 +16,20 @@ const bookObject = function (title, author, year, thumbnail, isComplete) {
     }
 }
 
+// =================== Optional Custom Event ===================
+const CUSTOM_EVENT = {
+    // save_data: new Event("saved"),
+    // load_data: new Event("loaded"),
+    // update_data: new Event("updated"),
+    remove_data: new Event("removed"),
+    add_data: new Event("added"),
+    invalid_thumbnail: new Event("invalid_thumbnail"),
+    invalid_year: new Event("invalid_year"),
+}
+
 
 // =================== Form Elements ===================
-// Elements
+// ** Elements init
 const inputBookTitle = document.querySelector("#inputBookTitle")
 const inputBookAuthor = document.querySelector("#inputBookAuthor")
 const inputBookYear = document.querySelector("#inputBookYear")
@@ -27,79 +37,50 @@ const inputBookIsComplete = document.querySelector("#isComplete")
 const inputBookThumbnail = document.querySelector("#inputBookThumbnail")
 const inputBookSubmit = document.querySelector("#inputBook")
 const inputSearchBook = document.querySelector("#inputSearchBook")
+const btnAdd = document.querySelector(".btn-add")
+
 
 // =================== Book Elements ===================
-// Elements
+// ** Elements init
 const leftColumn = document.querySelector(".left")
 const bookshelf = document.querySelector(".bookshelf")
 const booklist = document.querySelector(".book_list")
 const incompleteBookshelf = document.querySelector("#incompleteBookshelfList")
 const completeBookshelf = document.querySelector("#completeBookshelfList")
 const book_item = document.querySelectorAll(".book_item")
-const btnAdd = document.querySelector(".btn-add")
 
 
-// =================== Functions =======================
-function saveData() {
-    const saveEvent = new Event("saved")
-    const parsed = JSON.stringify(books)
-    localStorage.setItem("BOOKSHELF_APPS", parsed)
-    document.dispatchEvent(saveEvent)
+// =================== Helper Function =======================
+// ** Function to check if the url is an image
+function isImage(url) {
+    return (url.match(/\.(jpeg|jpg|gif|png)$/) != null)
 }
 
-function loadDataFromStorage() {
-    const serializedData = localStorage.getItem("BOOKSHELF_APPS")
-
-    let data = JSON.parse(serializedData)
-
-    if (data !== null) {
-        books = data
-    }
+// ** Function to check if the url is a valid url
+function filterBookById(bookId) {
+    return books.filter(book => book.id === bookId)
 }
 
-function emptyState() {
-    const emptyState = document.createElement("div")
-    emptyState.classList.add("empty-state")
-    emptyState.innerHTML = `
-        <img src="src/img/empty-state.svg" alt="empty-state">
-        <p>Belum ada buku yang selesai dibaca</p>
-    `
-
-    // completeBookshelf.append(emptyState)
-    return emptyState
+// ** Function to check if the date is between 1900 and 2040
+function isYearValid(year) {
+    return year >= 1100 && year <= 2040
 }
 
+// =================== DOM's Related Functions =======================
+// ** Function to render books to bookshelf
 function renderBooksToBookshelf() {
     for (let book of books) {
-        // const newBook = makeBookComponent(book.title, book.author, book.year, book.isComplete, book.thumbnail)
         const newBook = makeBookComponent(book.title, book.author, book.year, book.isComplete, book.thumbnail, book.id)
-
-        // const bookDataObj = bookObject(book.title, book.author, book.year, book.isComplete, book.thumbnail)
-
         if (book.isComplete) {
             completeBookshelf.append(newBook)
         } else {
             incompleteBookshelf.append(newBook)
         }
-
-        // books.push(bookDataObj)
     }
 }
 
 
-function isImage(url) {
-    return (url.match(/\.(jpeg|jpg|gif|png)$/) != null)
-}
-
-function filterBookById(bookId) {
-    return books.filter(book => book.id === bookId)
-}
-
-
-
-// =================== Function to create Components =======================
-//
-//
+// ** use this function to create book DOM element
 function makeBookComponent(bookTitle, bookAuthor, bookYear, bookIsComplete, bookThumbnail, bookId) {
     const thumbnail = bookThumbnail || "src/img/book-cover.jpg"
     const finishedBtn = createCheckButton()
@@ -114,6 +95,7 @@ function makeBookComponent(bookTitle, bookAuthor, bookYear, bookIsComplete, book
 
     const img = document.createElement("img")
     img.src = thumbnail
+    img.alt = `Cover buku ${bookTitle}`
 
     const bookDetail = document.createElement("div")
     bookDetail.classList.add("book_item_detail")
@@ -146,7 +128,7 @@ function makeBookComponent(bookTitle, bookAuthor, bookYear, bookIsComplete, book
     return book
 }
 
-// function to create button
+// ** Base function to create button
 function createButton(buttonClass, textValue, eventListener) {
     const button = document.createElement("button")
     button.classList.add(buttonClass)
@@ -156,7 +138,6 @@ function createButton(buttonClass, textValue, eventListener) {
         eventListener(event)
     })
     return button
-
 }
 
 function removeBook(bookElement) {
@@ -184,18 +165,13 @@ function removeBook(bookElement) {
             bookElement.parentElement.remove()
 
             saveData()
-            Swal.fire(
-                'Berhasil dihapus!',
-                'Buku anda berhasil dihapus.',
-                'success'
-            )
+            document.dispatchEvent(CUSTOM_EVENT.remove_data)
+
         }
     })
-
-
-    console.log(bookIndex)
 }
 
+// ** function to either add or remove book from bookshelf
 function swapBook(bookElement) {
     const selectedBookId = +bookElement.parentElement.getAttribute("id")
 
@@ -213,11 +189,10 @@ function swapBook(bookElement) {
     }
 
     saveData()
-    console.log(book)
 }
 
 
-// function to create check button
+// ** function that use the base function to create button 
 function createCheckButton() {
     return createButton("btn-green", "Selesai dibaca", (event) => {
         const { parentElement } = event.target.parentElement
@@ -225,7 +200,7 @@ function createCheckButton() {
     })
 }
 
-// function to create undo button
+
 function createUndoButton() {
     return createButton("btn-back", "Belum Selesai", function (event) {
         const { parentElement } = event.target.parentElement
@@ -239,23 +214,25 @@ function createTrashButton() {
     })
 }
 
-// Function to add book
 function addBook() {
     let bookTitle = inputBookTitle.value
     let bookAuthor = inputBookAuthor.value
-    let bookYear = inputBookYear.value
+    let bookYear = +inputBookYear.value
     let bookIsComplete = inputBookIsComplete.checked
     let bookThumbnail = inputBookThumbnail.value
 
-
-
     if (bookThumbnail) {
         if (!isImage(bookThumbnail)) {
-            alert("Link thumbnail buku tidak valid")
+            document.dispatchEvent(CUSTOM_EVENT.invalid_thumbnail)
             return
         }
     }
 
+    // if bookyear is not valid
+    if (!isYearValid(bookYear)) {
+        document.dispatchEvent(CUSTOM_EVENT.invalid_year)
+        return
+    }
 
     const bookDataObj = bookObject(bookTitle, bookAuthor, bookYear, bookThumbnail, bookIsComplete)
     const newBook = makeBookComponent(bookTitle, bookAuthor, bookYear, bookIsComplete, bookThumbnail, bookDataObj.id)
@@ -263,20 +240,18 @@ function addBook() {
     if (bookIsComplete) {
         // newBook[bookId] = bookDataObj.id
         completeBookshelf.append(newBook)
+
     } else {
-        // newBook[bookId] = bookDataObj.id
         incompleteBookshelf.append(newBook)
     }
 
-    console.log(bookDataObj.id)
+    // console.log(bookDataObj.id)
 
     books.push(bookDataObj)
 
     // save data to local storage
-    if (isStorageExist) {
-        saveData()
-    }
-    // console.log(bookDataObj)
+    saveData()
+    document.dispatchEvent(CUSTOM_EVENT.add_data)
 
     inputBookTitle.value = ""
     inputBookAuthor.value = ""
@@ -284,22 +259,13 @@ function addBook() {
     inputBookIsComplete.checked = false
     inputBookThumbnail.value = ""
 
-    Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Buku berhasil ditambahkan',
-        showConfirmButton: false,
-        timer: 1500
-    })
-
-    console.log(books)
 }
+
 
 function searchBook(key) {
     const filteredBook = books.filter(book => {
         return book.title.toLowerCase().includes(key.toLowerCase()) || book.author.toLowerCase().includes(key.toLowerCase()) || book.year.toLowerCase().includes(key.toLowerCase())
     })
-    // console.log(filteredBook)
 
     // clear the bookshelf
     completeBookshelf.innerHTML = ""
@@ -315,14 +281,5 @@ function searchBook(key) {
         }
     })
 
-
     return filteredBook
 }
-
-// =================== Event Listener =======================
-
-
-// =================== Helper Function =======================
-
-
-// =================== DOM Functions =========================
